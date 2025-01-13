@@ -1,0 +1,121 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    color: #333;
+}
+
+header {
+    text-align: center;
+    margin: 20px 0;
+}
+
+.main-screen, .shop-screen, .quest-screen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 80vh;
+}
+
+button {
+    padding: 10px 20px;
+    margin: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.shop-screen, .quest-screen {
+    display: none;
+}
+
+.inventory {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 80%;
+}
+
+.weapon-card, .item-card {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+    padding: 7px; /* Reduced padding */
+    margin: 5px;
+    width: 100px; /* Reduced width */
+    text-align: center;
+}
+
+.weapon-card h1, .item-card h1 {
+    font-size: 0.8em; /* Reduced font size */
+    font-weight: bold;
+    margin-bottom: 5px; /* Reduced margin */
+}
+
+.weapon-card p, .item-card p {
+    margin: 2px 0; /* Reduced margin */
+}
+
+
+.modal, .battlefield, .messages, .actions {
+    margin: 20px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+}
+
+#monster-img, #player-img {
+    max-width: 100px;
+}
+
+.player-info, .monster-info {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+#player-health, #player-gold {
+    width: 200px;
+}
+
+.messages {
+    height: 100px;
+    overflow-y: auto;
+    background-color: #eef;
+}
+
+#message-content { font-family: 'Courier New', Courier, monospace; 
+    white-space: pre;
+     border-right: 2px solid black;
+      animation: blink 0.7s steps(2, start) infinite; 
+    } 
+    @keyframes blink { 
+        from { border-color: transparent; } to { border-color: black; } 
+    }
+.actions {
+    display: flex;
+    justify-content: space-between;
+}
+.shop-actions {
+    display: flex;
+    justify-content: center; /* Center the buttons */
+    gap: 10px; /* Space between buttons */
+    margin-top: 20px; /* Add some space above the buttons */
+}
+
+.shop-actions  button {
+    padding: 10px 20px;
+    margin: 5px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #4CAF50; /* Green background color */
+    color: white; /* White text color */
+    font-size: 1em;
+    transition: background-color 0.3s ease;
+}
+
+.shop-actions button:hover {
+    background-color: #45a049; /* Darker green on hover */
+}
