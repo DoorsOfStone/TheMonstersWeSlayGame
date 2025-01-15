@@ -57,12 +57,15 @@ button {
 }
 
 
-.modal, .battlefield, .messages, .actions {
+.modal, .battlefield, .messages, .actions, .run-modal {
     margin: 20px;
     padding: 20px;
     border: 1px solid #ccc;
     border-radius: 5px;
     background-color: #fff;
+}
+.run-modal{
+    display: none;
 }
 
 #monster-img, #player-img {

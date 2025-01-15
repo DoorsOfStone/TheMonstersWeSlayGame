@@ -72,12 +72,15 @@ const questGold = document.getElementById('quest-gold')
 const playersInventoryContainer = document.querySelector('.player-inventory');
 const attackBtn = document.getElementById('attack-btn');
 const runBtn = document.getElementById('run-btn');
+const runModal = document.querySelector('.run-modal');
+const confirmRunBtn = document.getElementById('confirm-run-btn');
+const cancelRunBtn = document.getElementById('cancel-run-btn');
 //const missAttack = getRandomRange(1,100);
 const monsterHealth = document.getElementById('monster-health');
 const monsterName = document.getElementById('monster-name-field');
 let currentMonsterindex = 0;
 let monsterHP = monsterArr[currentMonsterindex].health
-let gold = 1000;
+let gold = 100;
 let inventory = [
     new Weapon(0,"Stick",10,0),
 ];
@@ -151,7 +154,7 @@ questBtn.addEventListener('click',()=>{
     questGold.innerText= gold;
     updateQuestInventory(document.querySelector('.quest-inventory'))
     if(messageBox){
-       updateMessage(`Player has entered the battlefield..${monsterArr[0].name} awaits `)
+       updateMessage(`Player has entered the battlefield..${monsterArr[currentMonsterindex].name} awaits `)
     }
 })
 // cancel quest btn
@@ -176,57 +179,67 @@ document.getElementById('confirm-btn').addEventListener('click',()=>{
  }
 
 // attacking function
-attackBtn.addEventListener('click',()=>{
+attackBtn.addEventListener('click',async()=>{
 if(selectedWeapon){
  monsterHP -= selectedWeapon.attack;
- monsterHealth.innerText = monsterHP
- updateMessage(`Warrior attacked with his ${selectedWeapon.name}, ${selectedWeapon.attack} damage done.`)
- 
-}else{
-    updateMessage("Please select a weapon before you attack.")
-}
+ monsterHealth.innerText = monsterHP;
+ await updateMessage(`Warrior attacked with his ${selectedWeapon.name}, ${selectedWeapon.attack} damage done.`)
 if(monsterHP <= 0){
-    updateMonster()
+    await updateMonster()
 }
-})
+}else {    
+    await updateMessage("Please select a weapon before you attack.");    
+}
+});
 // run fucntion
-const run =()=>{
-    // heads or tails to retreat
-    //update message the player retreated
-    // reveal main screen
-}
+runBtn.addEventListener('click',async()=>{
+     await updateMessage('Player is deciding to run....');
+     runModal.style.display = 'flex';
 
-// update monster after they are defeated
-function updateMonster(){
-   
-     if(monsterHP <= 0 && monsterArr[currentMonsterindex] >= monsterArr.length -1){
-        updateMessage("You have slayed all the monsters. Congrats you have won the game.")
-       }else{
-        updateMessage(`${monsterArr[currentMonsterindex].name} has been slain.`)
+})
+cancelRunBtn.addEventListener('click',async () => {
+    runModal.style.display = 'none';
+    await updateMessage('Player has decided to stay. You are a true warrior.');
+})
+// update monster after they are defeated and giving player their reward for defeating monster
+async function updateMonster(){
+      if(monsterHP <= 0){ 
+        await updateMessage(`${monsterArr[currentMonsterindex].name} has been slain. ${monsterArr[currentMonsterindex].reward} gold is your reward.`) 
+        gold += monsterArr[currentMonsterindex].reward;
+        questGold.innerText = gold;
         currentMonsterindex++;
-        monsterName.innerText = monsterArr[currentMonsterindex].name
-        monsterHealth.innerText = monsterHP
-        selectedWeapon = ''
-       }
+     if(currentMonsterindex < monsterArr.length){
+         monsterHP = monsterArr[currentMonsterindex].health;
+          monsterName.innerText = monsterArr[currentMonsterindex].name; 
+          monsterHealth.innerText = monsterHP; 
+          await updateMessage(`New monster: ${monsterArr[currentMonsterindex].name} appears with ${monsterHP} HP.`);
+         } else { 
+           await updateMessage("You have slain all the monsters. Congrats, you have won the game."); 
+        } 
+    }
 }
 // function for handling message display in battlefeild
 function updateMessage(message){
-    let index = 0;
-    // function to give that typing effect when displaying messages
-    function type(){
-    if(index < message.length){
-      messageBox.textContent += message.charAt(index);
-       index++ ;
-       setTimeout(type, 50);
-       
-    }
-    }
-        messageBox.textContent = '';
-        if(messageBox){
-            type()
+    return new Promise((resolve)=>{
+        let index = 0;
+        // function to give that typing effect when displaying messages
+        function type(){
+        if(index < message.length){
+          messageBox.textContent += message.charAt(index);
+           index++ ;
+           setTimeout(type, 100);
         }else{
-            console.error("MessageBox element not found.")
+            resolve();
         }
+        }
+            messageBox.textContent = '';
+            if(messageBox){
+                type()
+            }else{
+                console.error("MessageBox element not found.");
+                resolve();
+            }
+    })
     }
 
 // update player's inventory for Quest
