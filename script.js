@@ -140,6 +140,7 @@ function updatePlayerInventory(container){
         `
       container.appendChild(itemCard);
     })
+    
 }
 // exit shop 
 exitBtn.addEventListener('click',()=>{
@@ -201,6 +202,12 @@ cancelRunBtn.addEventListener('click',async () => {
     runModal.style.display = 'none';
     await updateMessage('Player has decided to stay. You are a true warrior.');
 })
+confirmRunBtn.addEventListener('click', async()=>{
+    await updateMessage(`Player has chosen to run,${monsterArr[currentMonsterindex].name} still lurks in the shadow... waiting for your return`);
+    runModal.style.display = 'none';
+    questScreen.style.display ='none';
+    mainScreen.style.display = 'flex';
+})
 // update monster after they are defeated and giving player their reward for defeating monster
 async function updateMonster(){
       if(monsterHP <= 0){ 
@@ -227,7 +234,7 @@ function updateMessage(message){
         if(index < message.length){
           messageBox.textContent += message.charAt(index);
            index++ ;
-           setTimeout(type, 100);
+           setTimeout(type, 50);
         }else{
             resolve();
         }
